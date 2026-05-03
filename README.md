@@ -39,6 +39,8 @@ Traditional systems biology tools treat biological networks as abstract graphs. 
 
 ## Quick Start
 
+### Option 1: Clone from repository
+
 ```bash
 git clone https://github.com/<your-username>/CellSPICE_biocircuit.git
 cd CellSPICE_biocircuit
@@ -46,7 +48,42 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:5173`.
+### Option 2: Download from Releases
+
+The `.tar.gz` archive is available on the [Releases](https://github.com/<your-username>/CellSPICE_biocircuit/releases) page.
+
+**Linux / macOS:**
+
+```bash
+tar -xzf CellSPICE_biocircuit.tar.gz
+cd CellSPICE_biocircuit
+npm install
+npm run dev
+```
+
+**Windows (PowerShell):**
+
+```powershell
+tar -xzf CellSPICE_biocircuit.tar.gz
+cd CellSPICE_biocircuit
+npm install
+npm run dev
+```
+
+**Windows (CMD):**
+
+```cmd
+tar -xzf CellSPICE_biocircuit.tar.gz
+cd CellSPICE_biocircuit
+npm install
+npm run dev
+```
+
+Windows 10 이상에서는 `tar`가 기본으로 포함되어 있습니다. 그 이전 버전이라면 [7-Zip](https://www.7-zip.org/)으로 압축을 해제하세요.
+
+Node.js가 설치되어 있어야 합니다. https://nodejs.org 에서 LTS 버전을 설치하세요.
+
+실행 후 터미널에 표시되는 주소(기본 `http://localhost:5173`)를 브라우저에서 열면 됩니다.
 
 ---
 
@@ -115,4 +152,4 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 
-Code generated with assistance from [Claude] (Anthropic). Idea, review, and revision by Hyeonje Yang.
+Code generated with assistance from [Claude](https://claude.ai) (Anthropic). Idea, review, and revision by Hyeonje Yang.
