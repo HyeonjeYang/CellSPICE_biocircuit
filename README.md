@@ -1,156 +1,111 @@
 # CellSPICE_biocircuit
 
-**A circuit-theoretic simulator for systems biology — from single-cell gene networks to multi-cell tissue dynamics.**
-
 CellSPICE bridges **electronic circuit theory** and **systems biology**, letting you design, simulate, and analyze biological circuits the same way electrical engineers design chips — except your components are genes, proteins, and signaling molecules.
 
-| Biology | ≡ Electronics |
-|---|---|
-| Negative feedback loop | Low-pass filter (RC) |
-| Positive feedback loop | Schmitt trigger / Latch |
-| Feedforward loop | Band-pass filter (RLC) |
-| Repressilator | Ring oscillator |
-| Hill function | Nonlinear amplifier gain |
-| Protein degradation | RC discharge (τ = 1/β) |
-| Gene expression | Voltage-controlled source |
+Traditional systems biology tools treat biological networks as abstract graphs. CellSPICE treats them as **engineered circuits** — because that's what they are.
 
-Traditional systems biology tools treat biological networks as abstract graphs. CellSPICE_biocirtui treats them as **engineered circuits** — because that's what they are.
+---
+
+## Electronic-Biological Analogies
+
+| Biology | Electronics | Equation |
+|---|---|---|
+| Gene (Hill activation) | Op-Amp | f(x) = w\*x^n / (K^n + x^n) |
+| Mutual repression | Zener Diode | Clamps to bistable states |
+| Enzyme cascade | BJT Transistor | Signal amplification with threshold |
+| Irreversible reaction | Diode | One-way signal flow |
+| Protein degradation | Resistor | tau = 1/beta = RC |
+| Protein accumulation | Capacitor | Integrates production |
+| HH Na+ channel | NMOS Transistor | Voltage-gated turn-on |
+| HH K+ channel | PMOS Transistor | Delayed negative feedback |
 
 ---
 
 ## Features
 
-### Circuit Design
-- Add biological components: **genes**, **proteins**, **mRNA**, **input signals**
-- Wire them with **activation (→)** or **repression (⊣)** connections
-- Every arrow displays its constants with units (K = 2 nM, n = 2)
-- Click any node or edge to see the governing **ODE** and **Hill equation**
+**Circuit Design** — Add genes, proteins, mRNA, input signals. Wire them with activation or repression. Click any node or edge to see the governing ODE and Hill equation with all parameters.
 
-### Multi-Cell Tissue Mode
-- Design one cell's internal circuit, then **duplicate it** as many times as needed
-- Add **intercellular connections** — model quorum sensing (AHL), morphogen gradients, juxtacrine signaling
-- Scale from single-cell behavior to emergent **tissue-level dynamics**
+**Multi-Cell Tissue Mode** — Design one cell's internal circuit, duplicate it, and add intercellular connections (quorum sensing, morphogens, juxtacrine signaling).
 
-### Simulation
-- Euler-method ODE solver with configurable time step
-- 5 input signal types: Step, Pulse, Ramp, Sine, Square
-- Interactive time-series plot with **drag-to-zoom** and **hover tooltips**
-- Track all species concentrations across all cells simultaneously
+**Time-Domain Simulation** — Euler ODE solver. Step, Pulse, Ramp, Sine, Square inputs. Drag-to-zoom on time series, hover for values.
 
-### Stability Analysis
-- Automatic **Jacobian matrix** computation (numerical)
-- **Eigenvalue** calculation via QR iteration
-- Classification: Stable Node, Stable Spiral, Unstable Node, Saddle Point, Center, etc.
-- Steady-state concentration readout
+**Frequency Response** — Linearize around steady state. Bode plot (magnitude and phase). Transfer function H(s) = C(sI-A)^(-1)B with poles and DC gain.
 
-### Electronic Circuit Analog
-- Automatic mapping of biological network → equivalent electronic schematic
-- Genes as op-amps, degradation as RC circuits, feedback as wired paths
-- Side-by-side comparison of bio and electronic representations
+**Stability Analysis** — Jacobian matrix, eigenvalues via QR iteration, automatic classification (Stable Node, Stable Spiral, Unstable, Saddle, Center). Steady-state readout.
+
+**Cable Theory** — Neuron modeled as RC transmission line. Passive cable equation with configurable Rm, Cm, Ra. Optional Hodgkin-Huxley ion channels (Na+/K+). Voltage propagation visualization.
 
 ---
 
 ## Quick Start
 
-CellSPICE runs as a standalone React component. No backend required.
-
 ```bash
-# Clone
 git clone https://github.com/<your-username>/CellSPICE_biocircuit.git
 cd CellSPICE_biocircuit
-
-# Install
 npm install
-
-# Run
 npm run dev
 ```
 
-Or simply open `multi-cell-circuit-builder.jsx` in any React environment (Vite, Next.js, Create React App, or Claude Artifacts).
+Open `http://localhost:5173`.
 
 ---
 
 ## Built-in Presets
 
-| Preset | Circuit Type | Electronic Analog |
+| Preset | Circuit | Electronic Analog |
 |---|---|---|
-| **Negative Feedback** | Self-repressing gene | RC Low-Pass Filter |
-| **Toggle Switch** | Mutual repression (A ⊣ B, B ⊣ A) | Bistable Latch |
-| **Repressilator** | 3-gene cyclic repression | 3-Stage Ring Oscillator |
-| **Signaling Cascade** | Ligand → Receptor → Kinase → TF | Multi-stage Amplifier |
-
-Load any preset, modify parameters, duplicate cells, and explore.
+| Negative Feedback | Self-repressing gene | RC Low-Pass Filter |
+| Toggle Switch | Mutual repression | Bistable Latch |
+| Repressilator | 3-gene cyclic repression | Ring Oscillator |
+| Cascade | Ligand-Receptor-Kinase-TF | Multi-stage Amplifier |
 
 ---
 
 ## The Math
 
-### Node dynamics (ODE)
-Each non-input node follows:
-
+**Node dynamics:**
 ```
-d[X]/dt = α · ∏(repression terms) + Σ(activation terms) − β · [X]
+d[X]/dt = alpha * prod(repression terms) + sum(activation terms) - beta * [X]
 ```
 
-### Hill activation
+**Hill functions:**
 ```
-H⁺(x) = w · xⁿ / (Kⁿ + xⁿ)
-```
-
-### Hill repression
-```
-H⁻(x) = Kⁿ / (Kⁿ + xⁿ)
+H+(x) = w * x^n / (K^n + x^n)       (activation)
+H-(x) = K^n / (K^n + x^n)            (repression)
 ```
 
-### Stability
-Jacobian **J** is computed numerically at steady state. Eigenvalues λ of **J** determine local stability:
-- All Re(λ) < 0 → **Stable** (perturbations decay)
-- Any Re(λ) > 0 → **Unstable** (perturbations grow)
-- Im(λ) ≠ 0 → **Oscillatory** component
+**Transfer function:**
+```
+H(s) = C * (sI - A)^(-1) * B
+```
 
----
+**Cable equation:**
+```
+tau_m * dV/dt = lambda^2 * d2V/dx2 - (V - Vrest) + Rm * Iext
+```
 
-## Use Cases
-
-- **Synthetic biology** — Design and test gene circuits in silico before cloning
-- **Systems biology courses** — Interactive teaching tool for gene regulation
-- **iGEM projects** — Prototype circuit designs with quantitative predictions
-- **Research** — Quick stability screening of network motifs
-- **Interdisciplinary learning** — Bridge EE and biology with concrete analogies
-
----
-
-## Roadmap
-
-- [ ] Stochastic simulation (Gillespie algorithm / Chemical Langevin)
-- [ ] Phase portrait visualization
-- [ ] Bifurcation diagrams (parameter sweeps)
-- [ ] SBML import/export
-- [ ] Spatial diffusion model for morphogen gradients
-- [ ] Sensitivity analysis (parameter robustness)
-- [ ] Export to LaTeX equations
-- [ ] Dark/light theme toggle
+**Stability:** Eigenvalues of Jacobian A at steady state. Re(lambda) < 0 = stable, Re(lambda) > 0 = unstable, Im(lambda) != 0 = oscillatory.
 
 ---
 
 ## Tech Stack
 
-- **React** (functional components + hooks)
-- **Canvas API** for high-performance plotting
-- **SVG** for network diagrams and circuit schematics
-- **QR iteration** for eigenvalue computation
-- Zero external dependencies beyond React
+- React 18, Vite
+- Canvas API for plotting
+- SVG for network diagrams
+- QR iteration for eigenvalues
+- Complex matrix inversion for Bode analysis
+- No external dependencies beyond React
 
 ---
 
-## Contributing
+## Roadmap
 
-Contributions are welcome! Whether it's new circuit motifs, better numerical methods, UI improvements, or documentation.
-
-```bash
-# Fork → Branch → Code → PR
-git checkout -b feature/bifurcation-diagram
-```
+- [ ] Stochastic simulation (Gillespie algorithm)
+- [ ] Phase portrait visualization
+- [ ] Bifurcation diagrams
+- [ ] Spatial diffusion for morphogen gradients
+- [ ] Sensitivity analysis
 
 ---
 
@@ -159,9 +114,5 @@ git checkout -b feature/bifurcation-diagram
 MIT License. See [LICENSE](LICENSE) for details.
 
 ---
-Code generated with assistance from Claude (Anthropic). Physics model design by Hyeonje Yang
 
-## Future Developmet
-
-Planned: Add frequency-response and Bode plot visualization.  
-Proposed on 2026-05-02.
+Code generated with assistance from [Claude] (Anthropic). Idea, review, and revision by Hyeonje Yang.
