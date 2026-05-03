@@ -1,18 +1,8 @@
-# CellSPICE
+# CellSPICE_biocircuit
 
 **A circuit-theoretic simulator for systems biology — from single-cell gene networks to multi-cell tissue dynamics.**
 
-> *"A cell is a filter. A gene regulatory network is a circuit."*
-
 CellSPICE bridges **electronic circuit theory** and **systems biology**, letting you design, simulate, and analyze biological circuits the same way electrical engineers design chips — except your components are genes, proteins, and signaling molecules.
-
-![License](https://img.shields.io/badge/license-MIT-blue)
-![React](https://img.shields.io/badge/built%20with-React-61DAFB)
-![Status](https://img.shields.io/badge/status-active%20development-brightgreen)
-
----
-
-## Why CellSPICE?
 
 | Biology | ≡ Electronics |
 |---|---|
@@ -24,7 +14,7 @@ CellSPICE bridges **electronic circuit theory** and **systems biology**, letting
 | Protein degradation | RC discharge (τ = 1/β) |
 | Gene expression | Voltage-controlled source |
 
-Traditional systems biology tools treat biological networks as abstract graphs. CellSPICE treats them as **engineered circuits** — because that's what they are.
+Traditional systems biology tools treat biological networks as abstract graphs. CellSPICE_biocirtui treats them as **engineered circuits** — because that's what they are.
 
 ---
 
@@ -66,8 +56,8 @@ CellSPICE runs as a standalone React component. No backend required.
 
 ```bash
 # Clone
-git clone https://github.com/<your-username>/CellSPICE.git
-cd CellSPICE
+git clone https://github.com/<your-username>/CellSPICE_biocircuit.git
+cd CellSPICE_biocircuit
 
 # Install
 npm install
