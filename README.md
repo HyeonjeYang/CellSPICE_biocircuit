@@ -79,14 +79,6 @@ npm install
 npm run dev
 ```
 
-Windows 10 이상에서는 `tar`가 기본으로 포함되어 있습니다. 그 이전 버전이라면 [7-Zip](https://www.7-zip.org/)으로 압축을 해제하세요.
-
-Node.js가 설치되어 있어야 합니다. https://nodejs.org 에서 LTS 버전을 설치하세요.
-
-실행 후 터미널에 표시되는 주소(기본 `http://localhost:5173`)를 브라우저에서 열면 됩니다.
-
----
-
 ## Built-in Presets
 
 | Preset | Circuit | Electronic Analog |
