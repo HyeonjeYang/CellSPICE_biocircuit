@@ -160,3 +160,8 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 Code generated with assistance from Claude (Anthropic). Physics model design by Hyeonje Yang
+
+## Future Developmet
+
+Planned: Add frequency-response and Bode plot visualization.  
+Proposed on 2026-05-02.
